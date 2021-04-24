@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "ADA5EA33-5EEF-48A0-BB96-8AB5C67CD0EA"
+   type = "0"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "60EA6F6D-23B7-4257-9957-3068DCC90D51"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "laba1/Models/Plant.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "14"
+            endingLineNumber = "14"
+            landmarkName = "Plant"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "60EA6F6D-23B7-4257-9957-3068DCC90D51 - e8f7e8dd2b8989a8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "laba1.Plant.name.getter : Swift.String"
+                  moduleName = "laba1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/olga/Desktop/laba1Erik/laba1/Models/Plant.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "139">
+               </Location>
+               <Location
+                  uuid = "60EA6F6D-23B7-4257-9957-3068DCC90D51 - c548775d78ecfeb4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "laba1.Plant.name.setter : Swift.String"
+                  moduleName = "laba1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/olga/Desktop/laba1Erik/laba1/Models/Plant.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "174">
+               </Location>
+               <Location
+                  uuid = "60EA6F6D-23B7-4257-9957-3068DCC90D51 - 20157d84b5cfd29b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "laba1.Plant.name.modify : Swift.String"
+                  moduleName = "laba1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/olga/Desktop/laba1Erik/laba1/Models/Plant.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0"
+                  offsetFromSymbolStart = "18">
+               </Location>
+               <Location
+                  uuid = "60EA6F6D-23B7-4257-9957-3068DCC90D51 - 2f332a7c61bbc9b4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "laba1.Plant.name.modify : Swift.String with unmangled suffix &quot;.resume.0&quot;"
+                  moduleName = "laba1"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/olga/Desktop/laba1Erik/laba1/Models/Plant.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "14"
+                  endingLineNumber = "14"
+                  offsetFromSymbolStart = "4">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "591913D7-0EE6-43FA-9498-DBE0E650E727"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "../../Library/Developer/Xcode/DerivedData/laba1-gyguswpqjulfvzbpufsgfoorgkbn/Build/Products/Debug-iphonesimulator/FirebaseDatabase/FirebaseDatabase.framework/Headers/FIRDataSnapshot.h"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "FIRDataSnapshot"
+            landmarkType = "2">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
