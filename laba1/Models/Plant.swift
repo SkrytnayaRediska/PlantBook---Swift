@@ -17,11 +17,13 @@ final class Plant: NSObject {
     var video: String
     var plantDescription: String
     var completed: Bool
-    var imageUrl: String    
+    var imageUrl: String
+    var mapX: Double
+    var mapY: Double
     
     
     
-    init(name: String, lifeTime: Float, plantFamily: String, video: String, plantDescription: String, imageUrl: String, completed: Bool) {
+    init(name: String, lifeTime: Float, plantFamily: String, video: String, plantDescription: String, imageUrl: String, completed: Bool, mapX: Double, mapY: Double) {
         
         self.ref = nil
         self.name = name
@@ -31,6 +33,8 @@ final class Plant: NSObject {
         self.plantDescription = plantDescription
         self.imageUrl = imageUrl
         self.completed = completed
+        self.mapX = mapX
+        self.mapY = mapY
         
     }
     
@@ -43,6 +47,8 @@ final class Plant: NSObject {
             let video = value["video"] as? String,
             let plantDescription = value["description"] as? String,
             var imageUrl = value["imageUrl"] as? String,
+            let mapX = value["mapX"] as? Double,
+            let mapY = value["mapY"] as? Double,
             let completed = value["completed"] as? Bool else {
             return nil
         }
@@ -55,6 +61,8 @@ final class Plant: NSObject {
         self.plantDescription = plantDescription
         self.imageUrl = imageUrl
         self.completed = completed
+        self.mapX = mapX
+        self.mapY = mapY
 
     }
     
@@ -75,7 +83,9 @@ final class Plant: NSObject {
             "plantFamily": plantFamily,
             "video": video,
             "imageUrl": imageUrl,
-            "completed" : completed
+            "completed" : completed,
+            "mapX" : mapX,
+            "mapY" : mapY
             
         ]
     }

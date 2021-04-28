@@ -19,6 +19,8 @@
 		775E87F22629B3540047D92F /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775E87F12629B3540047D92F /* StorageService.swift */; };
 		775E87F52629B58A0047D92F /* PlantService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 775E87F42629B58A0047D92F /* PlantService.swift */; };
 		7767A774261A4C690077AE09 /* PlantCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7767A773261A4C690077AE09 /* PlantCollection.swift */; };
+		7767D4F32636E24A00CD499D /* VideoRep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7767D4F22636E24A00CD499D /* VideoRep.swift */; };
+		7767D4F62636F5AF00CD499D /* VideoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7767D4F52636F5AF00CD499D /* VideoPicker.swift */; };
 		776E69A9261DCB70001C4A8D /* PlantDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776E69A8261DCB70001C4A8D /* PlantDetailController.swift */; };
 		7773AB1725FE79BB004C41DE /* Plant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7773AB1625FE79BB004C41DE /* Plant.swift */; };
 		7773AB2525FE8DE6004C41DE /* PlantCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7773AB2425FE8DE6004C41DE /* PlantCell.swift */; };
@@ -27,6 +29,7 @@
 		778A9C19260CDF2B0004378B /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778A9C18260CDF2B0004378B /* SignInViewController.swift */; };
 		778A9C1C260CE3EA0004378B /* MeasurementHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778A9C1B260CE3EA0004378B /* MeasurementHelper.swift */; };
 		778A9C1F260CE4560004378B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 778A9C1E260CE4560004378B /* Constants.swift */; };
+		77DF2F1C26382E62000AE419 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DF2F1B26382E62000AE419 /* MapViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +49,8 @@
 		775E87F12629B3540047D92F /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 		775E87F42629B58A0047D92F /* PlantService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantService.swift; sourceTree = "<group>"; };
 		7767A773261A4C690077AE09 /* PlantCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantCollection.swift; sourceTree = "<group>"; };
+		7767D4F22636E24A00CD499D /* VideoRep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoRep.swift; sourceTree = "<group>"; };
+		7767D4F52636F5AF00CD499D /* VideoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPicker.swift; sourceTree = "<group>"; };
 		776E69A8261DCB70001C4A8D /* PlantDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantDetailController.swift; sourceTree = "<group>"; };
 		7773AB1625FE79BB004C41DE /* Plant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plant.swift; sourceTree = "<group>"; };
 		7773AB2425FE8DE6004C41DE /* PlantCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantCell.swift; sourceTree = "<group>"; };
@@ -54,6 +59,7 @@
 		778A9C18260CDF2B0004378B /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		778A9C1B260CE3EA0004378B /* MeasurementHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MeasurementHelper.swift; path = "../../../codelab-friendlychat-ios/ios-starter/swift-starter/FriendlyChatSwift/MeasurementHelper.swift"; sourceTree = "<group>"; };
 		778A9C1E260CE4560004378B /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Constants.swift; path = "../../../codelab-friendlychat-ios/ios-starter/swift-starter/FriendlyChatSwift/Constants.swift"; sourceTree = "<group>"; };
+		77DF2F1B26382E62000AE419 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,6 +147,7 @@
 				778A9C1B260CE3EA0004378B /* MeasurementHelper.swift */,
 				778A9C1E260CE4560004378B /* Constants.swift */,
 				775E87E926247F540047D92F /* GlobalVariables.swift */,
+				77DF2F1B26382E62000AE419 /* MapViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -166,6 +173,8 @@
 			isa = PBXGroup;
 			children = (
 				777446DA2631E85C004490FE /* PhotoRepository.swift */,
+				7767D4F22636E24A00CD499D /* VideoRep.swift */,
+				7767D4F52636F5AF00CD499D /* VideoPicker.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -310,10 +319,13 @@
 				775AC86625FE4EAD00557B4C /* AppDelegate.swift in Sources */,
 				7773AB1725FE79BB004C41DE /* Plant.swift in Sources */,
 				775AC86825FE4EAD00557B4C /* SceneDelegate.swift in Sources */,
+				7767D4F62636F5AF00CD499D /* VideoPicker.swift in Sources */,
+				7767D4F32636E24A00CD499D /* VideoRep.swift in Sources */,
 				775E87EA26247F550047D92F /* GlobalVariables.swift in Sources */,
 				775E87F22629B3540047D92F /* StorageService.swift in Sources */,
 				778A9C1C260CE3EA0004378B /* MeasurementHelper.swift in Sources */,
 				775E87F52629B58A0047D92F /* PlantService.swift in Sources */,
+				77DF2F1C26382E62000AE419 /* MapViewController.swift in Sources */,
 				7767A774261A4C690077AE09 /* PlantCollection.swift in Sources */,
 				775E87E0261F40A00047D92F /* AddPlantViewController.swift in Sources */,
 				778A9C19260CDF2B0004378B /* SignInViewController.swift in Sources */,

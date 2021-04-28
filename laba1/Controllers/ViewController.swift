@@ -30,11 +30,24 @@ final class ViewController: UIViewController, UITextFieldDelegate{
     
     override func viewDidLoad() {
       super.viewDidLoad()
+
       setupView()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveRequest(_:)), name: .didReciveRequest, object: nil)
+        
      }
+    
+    @objc func onDidReceiveRequest(_ notification: Notification) {
+       
+        let allItems = ["allItems" : items]
+        NotificationCenter.default.post(name: .didReceiveData, object: self, userInfo: allItems)
+                
+    }
     
     
     private func setupView() {
+        
+        
       self.title = "Library"
         collectionView.delegate = self
         
@@ -42,10 +55,15 @@ final class ViewController: UIViewController, UITextFieldDelegate{
     
         configureDatabase()
         configureDataSource()
+        
 
     }
     
-    
+    deinit {
+         print("Remove NotificationCenter Deinit")
+        NotificationCenter.default.removeObserver(self)
+     }
+
     
     // MARK: Add Item
     
@@ -126,7 +144,8 @@ extension ViewController {
 
 
     }
-
+    
+    
 }
 
 
@@ -161,13 +180,17 @@ extension ViewController {
             
             let collection = PlantsCollection(name: "plantsCollection", plants: self.items)
             
+//            let allItems = ["allItems" : self.items]
+//            NotificationCenter.default.post(name: .didReceiveData, object: self, userInfo: allItems)
+            
             self.configureSnapshot(myPlants: collection)
             
 //            let jsonData = try! JSONSerialization.data(withJSONObject: snapshot.value!, options: .prettyPrinted)
 //            let myRealData = try! JSONDecoder().decode(PlantsCollection.self, from: jsonData)
 //
 //            let lastItemIndex = ["lastItemIndex" : myRealData.plants.count]
-//            NotificationCenter.default.post(name: .didReceiveData, object: self, userInfo: lastItemIndex)
+//            let allItems = ["allItems" : newItems]
+//            NotificationCenter.default.post(name: .didReceiveData, object: self, userInfo: allItems)
 //
 //            self.configureSnapshot(myPlants: myRealData)
             

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVKit
 
 final class PlantDetailViewController: UIViewController {
 
@@ -32,6 +33,7 @@ final class PlantDetailViewController: UIViewController {
     }
     
     init?(coder: NSCoder, plant: Plant) {
+        
         self.plant = plant
         super.init(coder: coder)
     }
@@ -40,8 +42,34 @@ final class PlantDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTaped))
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewDidLoad()
+        setupView()
+    }
+    
+    @objc func editTaped() {
+        if let plantDetailController = storyboard?.instantiateViewController(identifier: AddPlantViewController.identifier, creator: { coder in
+            return AddPlantViewController(coder: coder, plant: self.plant)
+        }) {
+       show(plantDetailController, sender: nil)
+     }
+    }
+    
+    @IBAction func ShowVideo(_ sender: Any) {
+        print("hellio")
+    
+        let video = AVPlayer(url: URL(string: plant.video)!)
+        let videoPlayer =  AVPlayerViewController()
+        
+        videoPlayer.player = video
+        
+        self.present(videoPlayer, animated: true) {
+            video.play()
+        }
+    }
     func downloadPhoto(imageView: UIImageView, url: String) {
 
         let url = URL(string: url)!

@@ -25,7 +25,7 @@ struct PlantService {
     
     private static func create(forURLString urlString: String) {
         
-        let plant = Plant(name: "", lifeTime: 0.0, plantFamily: "", video: "", plantDescription: "", imageUrl: urlString, completed: false)
+        let plant = Plant(name: "", lifeTime: 0.0, plantFamily: "", video: "", plantDescription: "", imageUrl: urlString, completed: false, mapX: 0.0, mapY: 0.0)
         
         let dict = Plant.toAnyObject(plant)
         

@@ -10,5 +10,6 @@ import Foundation
 class GlobalVariables: NSObject {
     
     var pathToLastItem = "plantsCollection/plants/0"
+    
 }
 var global = GlobalVariables()
