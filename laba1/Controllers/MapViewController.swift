@@ -19,7 +19,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
+
     
+    @IBOutlet weak var mapNavigationBar: UINavigationBar!
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.post(name: .didReciveRequest, object: self)
@@ -29,14 +31,32 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-
+        setUpView()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .didReceiveData, object: nil)
         
        
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
+        
+        if ThemeManager.isDarkMode() {
+            enableDarkMode()
+        }
+        
     
+    }
+    
+    func setUpView() {
+        ThemeManager.addDarkModeObserver(to: self, selector: #selector(enableDarkMode))
+    }
+    
+    @objc func enableDarkMode() {
+        let currentTheme = ThemeManager.currentTheme
+        
+        mapNavigationBar.barTintColor = currentTheme.backgroundColorForNavigationBar
+        mapNavigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: currentTheme.textColor]
+        
     }
     
     @objc func onDidReceiveData(_ notification: Notification) {

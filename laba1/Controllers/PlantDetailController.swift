@@ -17,32 +17,59 @@ final class PlantDetailViewController: UIViewController {
     
     private let plant: Plant
     
+    private var isDarkMode: Bool
+
+
+
     
+    
+    @IBOutlet weak var lifeTimeUILabel: UILabel!
     
     @IBOutlet weak var plantCoverImageView: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var plantFamilyLabel: UILabel!
-
-    @IBOutlet weak var videoLabel: UILabel!
+    @IBOutlet weak var lifeTimeLabel: UILabel!
+    @IBOutlet weak var descriptionTextVIew: UITextView!
     
-    @IBOutlet weak var videoTextView: UITextView!
-    
+    @IBOutlet weak var videosLabelButton: UIButton!
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init?(coder: NSCoder, plant: Plant) {
+    init?(coder: NSCoder, plant: Plant, isDarkMode: Bool) {
         
         self.plant = plant
+        self.isDarkMode = isDarkMode
         super.init(coder: coder)
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
         setupView()
+        
+
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTaped))
+        
+        plantCoverImageView.isUserInteractionEnabled = true
+        let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showPhotoCollection))
+        plantCoverImageView.addGestureRecognizer(gestureRecognizer)
+        
+        if isDarkMode { enableDarkMode() }
+    
+    }
+    
+    
+    
+    @objc func showPhotoCollection() {
+        
+        if let plantDetailController = storyboard?.instantiateViewController(identifier: PhotosCollectionViewController.identifier, creator: { coder in
+            return PhotosCollectionViewController(coder: coder, plant: self.plant)
+        }) {
+       show(plantDetailController, sender: nil)
+     }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,7 +79,7 @@ final class PlantDetailViewController: UIViewController {
     
     @objc func editTaped() {
         if let plantDetailController = storyboard?.instantiateViewController(identifier: AddPlantViewController.identifier, creator: { coder in
-            return AddPlantViewController(coder: coder, plant: self.plant)
+            return AddPlantViewController(coder: coder, plant: self.plant, isDarkMode: self.isDarkMode)
         }) {
        show(plantDetailController, sender: nil)
      }
@@ -87,15 +114,27 @@ final class PlantDetailViewController: UIViewController {
         dataTask.resume()
     }
     
+    @objc func enableDarkMode() {
+        let currentTheme = ThemeManager.currentTheme
+        nameLabel.textColor = currentTheme.textColor
+        view.backgroundColor = currentTheme.backgroundColor
+        plantFamilyLabel.textColor = currentTheme.textColor.withAlphaComponent(0.5)
+        lifeTimeUILabel.textColor = currentTheme.textColor
+        descriptionTextVIew.textColor = currentTheme.textColor
+        
+    }
     
     private func setupView() {
+        ThemeManager.addDarkModeObserver(to: self, selector: #selector(enableDarkMode))
+        
         self.title = plant.name
-        downloadPhoto(imageView: plantCoverImageView, url: plant.imageUrl)// MARK: - ЗАГЛУШКА (ПОФИКИСИТЬ) -
+        downloadPhoto(imageView: plantCoverImageView, url: plant.imageUrl[0])
         nameLabel.text = plant.name
         plantFamilyLabel.text = plant.plantFamily
-        videoLabel.text = plant.video
-        videoTextView.isEditable = false;
-        videoTextView.text = plant.video
+        lifeTimeLabel.text = String(plant.lifeTime)
+        descriptionTextVIew.isEditable = false
+        descriptionTextVIew.text = plant.plantDescription
+        
     }
 }
 

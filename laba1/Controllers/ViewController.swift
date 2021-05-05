@@ -7,7 +7,6 @@
 
 import UIKit
 import Photos
-
 import Firebase
 
 final class ViewController: UIViewController, UITextFieldDelegate{
@@ -17,9 +16,11 @@ final class ViewController: UIViewController, UITextFieldDelegate{
     var data: [DataSnapshot] = []
     var items: [Plant] = []
     fileprivate var _refHandle: DatabaseHandle!
+    private var isDarkMode = false
     
     var storageRef: StorageReference!
-    var remoteConfig: RemoteConfig!
+//    var remoteConfig: RemoteConfig!
+    
     
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -35,6 +36,11 @@ final class ViewController: UIViewController, UITextFieldDelegate{
         
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveRequest(_:)), name: .didReciveRequest, object: nil)
         
+        if ThemeManager.isDarkMode() {
+            enableDarkMode()
+        }
+        
+        
      }
     
     @objc func onDidReceiveRequest(_ notification: Notification) {
@@ -46,7 +52,7 @@ final class ViewController: UIViewController, UITextFieldDelegate{
     
     
     private func setupView() {
-        
+        ThemeManager.addDarkModeObserver(to: self, selector: #selector(enableDarkMode))
         
       self.title = "Library"
         collectionView.delegate = self
@@ -59,10 +65,15 @@ final class ViewController: UIViewController, UITextFieldDelegate{
 
     }
     
-    deinit {
-         print("Remove NotificationCenter Deinit")
-        NotificationCenter.default.removeObserver(self)
-     }
+    @objc func enableDarkMode() {
+        isDarkMode = ThemeManager.isDarkMode()
+        let currentTheme = ThemeManager.currentTheme
+        collectionView.backgroundColor = currentTheme.backgroundColor
+        navigationController?.navigationBar.barTintColor = currentTheme.backgroundColorForNavigationBar
+        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: currentTheme.textColor]
+        tabBarController?.tabBar.barTintColor = currentTheme.backgroundColorForNavigationBar
+    }
+    
 
     
     // MARK: Add Item
@@ -84,10 +95,11 @@ extension ViewController {
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
             item.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
             
-            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.2))
+            let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(0.33))
             let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
             
             let section = NSCollectionLayoutSection(group: group)
+       
             
             
             return UICollectionViewCompositionalLayout(section: section)
@@ -121,7 +133,7 @@ extension ViewController {
             
             
             cell.titleLabel.text = plant.name
-            self.downloadPhoto(cell: cell, url: plant.imageUrl)
+            self.downloadPhoto(cell: cell, url: plant.imageUrl[0])
             
             
           //  cell.plantImage.image = plant
@@ -168,10 +180,10 @@ extension ViewController {
                    let plantItem = Plant(snapshot: snapshot) {
                     print("snapshot HERE!!! \(snapshot)")
                     print("in HERE in in \(plantItem.lifeTime)")
-                    if(plantItem.imageUrl == "") {
+                    if(plantItem.imageUrl[0] == "") {
                         return
                     }
-                    if(plantItem.completed && plantItem.imageUrl != "") {
+                    if(plantItem.completed && plantItem.imageUrl[0] != "") {
                     newItems.append(plantItem)
                     }
                 }
@@ -204,11 +216,10 @@ extension ViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let plant = dataSource.itemIdentifier(for: indexPath),
            let plantDetailController = storyboard?.instantiateViewController(identifier: PlantDetailViewController.identifier, creator: { coder in
-            return PlantDetailViewController(coder: coder, plant: plant)
+            return PlantDetailViewController(coder: coder, plant: plant, isDarkMode: self.isDarkMode)
            }) {
           show(plantDetailController, sender: nil)
         }
     }
 }
-
-
+    

@@ -27,11 +27,13 @@ class AddPlantViewController: UIViewController {
     var videoUrl: URL? = nil
     var uploadedVideoUrl: URL? = nil
     var pickingImage = false
+    var pickingMainPhoto = false
     var pickingVideo = false
+    private var isDarkMode: Bool = false
     
     static let identifier = String(describing: AddPlantViewController.self)
     
-    var plantItem: Plant = Plant(name: "", lifeTime: 0.0, plantFamily: "", video: "", plantDescription: "", imageUrl: "", completed: false, mapX: 0.0, mapY: 0.0)
+    var plantItem: Plant = Plant(name: "", lifeTime: 0.0, plantFamily: "", video: "", plantDescription: "", imageUrl: [""], completed: false, mapX: 0.0, mapY: 0.0)
     
     var ref: DatabaseReference = Database.database().reference()
     var storageRef = Storage.storage().reference()
@@ -41,38 +43,49 @@ class AddPlantViewController: UIViewController {
     @IBOutlet weak var lifeTimeTextField: UITextField!
     @IBOutlet weak var plantImageView: UIImageView!
     
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var plantFamilyLabel: UILabel!
+    @IBOutlet weak var lifeTimeLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    
     @IBOutlet weak var AddButton: UIButton!
     @IBOutlet weak var SaveChangesButton: UIButton!
     @IBOutlet weak var plantVideoImageView: UIImageView!
+    @IBOutlet weak var videoButton: UIButton!
+    
     @IBOutlet weak var addSecondaryPhotosButton: UIButton!
     
-    //    @objc func onDidReceiveData(_ notification: Notification) {
-//        if let data = notification.userInfo as? [String: Int] {
-//            global.pathToLastItem = "plantsCollection/plants/" + String(data["lastItemIndex"] ?? 0)
-//            print("HRERE")
-//            print(global.pathToLastItem)
-//        }
-//    }
+    @IBOutlet weak var plantDescription: UITextView!
     
     
     required init?(coder: NSCoder) {
        // fatalError("init(coder:) has not been implemented")
+        isDarkMode = ThemeManager.isDarkMode()
         super.init(coder: coder)
     }
     
-    init?(coder: NSCoder, plant: Plant) {
+    init?(coder: NSCoder, plant: Plant, isDarkMode: Bool) {
+        self.isDarkMode = isDarkMode
         super.init(coder: coder)
         self.plantItem = plant
-        
     }
     
     @IBAction func addPlant(_ sender: Any) {
-        
+        if fieldCheck() {
         addPlantToFirebase()
         _ = self.navigationController?.popViewController(animated: true)
+        }
     }
     
-
+    @IBAction func addSecondaryPhotos(_ sender: Any) {
+        var configuration = PHPickerConfiguration()
+        configuration.filter = .images
+        configuration.selectionLimit = 5
+        let controller =  PHPickerViewController(configuration: configuration)
+        controller.delegate = self
+        present(controller, animated: true)
+    }
+    
     
     func downloadPhoto(imageView: UIImageView, url: String) {
 
@@ -90,16 +103,75 @@ class AddPlantViewController: UIViewController {
         }
         dataTask.resume()
     }
+    
+    func fieldCheck() -> Bool {
+        
+        var title = ""
+        var completed = true
+        var showAllert = false
+        
+        if nameTextField.text == "" {
+            title = "name field is empty"
+            completed = false
+            showAllert = true
+        }
+        
+        if plantFamilyTextField.text == "" {
+            title = "Family field is empty"
+            completed = false
+            showAllert = true
+        }
+
+        if lifeTimeTextField.text == "" {
+            title = "life time field is empty"
+            completed = false
+            showAllert = true
+        }
+        
+        if plantDescription.text == "" {
+            title = "Description field is empty"
+            completed = false
+            showAllert = true
+        }
+        if plantItem.video == "" {
+        if uploadedVideoUrl == nil {
+            title = "Video has not been selected or upload didn't finish"
+            completed = false
+            showAllert = true
+        }
+        }
+        
+        if showAllert {
+            let alert = UIAlertController(title: title, message: "Plese fill out the fields", preferredStyle: .alert)
+
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        }
+    
+        
+        return completed
+    }
 
     @IBAction func SaveChanges(_ sender: Any) {
+        if fieldCheck() {
         addPlantToFirebase()
         _ = self.navigationController?.popViewController(animated: true)
+        }
+            
     }
 
   
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("SMOTRY SUDA - >>>>>>> \(plantItem.ref)")
+        
+        
+        ThemeManager.addDarkModeObserver(to: self, selector: #selector(enableDarkMode))
+        
+        nameTextField.delegate = self
+        lifeTimeTextField.delegate = self
+        plantFamilyTextField.delegate = self
+        
+        
         SaveChangesButton.isHidden = true
         
         if plantItem.ref != nil {
@@ -112,29 +184,51 @@ class AddPlantViewController: UIViewController {
         lifeTimeTextField.text = String(plantItem.lifeTime)
         }
         plantFamilyTextField.text = plantItem.plantFamily
-        if plantItem.imageUrl != "" {
-            downloadPhoto(imageView: plantImageView, url: plantItem.imageUrl)
+        if plantItem.imageUrl[0] != "" {
+            downloadPhoto(imageView: plantImageView, url: plantItem.imageUrl[0])
+        }
+        if plantItem.plantDescription != "" {
+            plantDescription.text = plantItem.plantDescription
         }
         
-//        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .didReceiveData, object: nil)
-//
+
         
         plantImageView.isUserInteractionEnabled = true
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(changeImage))
         plantImageView.addGestureRecognizer(gestureRecognizer)
         
-//        plantVideoImageView.isUserInteractionEnabled = true
-//        let gestureRecognizerVideo = UITapGestureRecognizer(target: self, action: #selector(changeVideo))
-//        plantVideoImageView.addGestureRecognizer(gestureRecognizerVideo)
+        if isDarkMode { enableDarkMode() }
+          
         
-//        plantVideoImageView.isUserInteractionEnabled = true
-//        let gestureRecognizerVideo = UITapGestureRecognizer(target: self, action: #selector(changeVideo))
-//        plantVideoImageView.addGestureRecognizer(gestureRecognizerVideo)
-                
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        lifeTimeTextField.resignFirstResponder()
+        plantDescription.resignFirstResponder()
+        
+    }
+    
+    @objc func enableDarkMode() {
+        let currentTheme = ThemeManager.currentTheme
+        
+        view.backgroundColor = currentTheme.backgroundColor
+        nameLabel.textColor = currentTheme.textColor
+        plantFamilyLabel.textColor = currentTheme.textColor
+        lifeTimeLabel.textColor = currentTheme.textColor
+        descriptionLabel.textColor = currentTheme.textColor
+        
+        AddButton.setTitleColor(currentTheme.textColor, for: .normal)
+        SaveChangesButton.setTitleColor(currentTheme.textColor, for: .normal)
+        addSecondaryPhotosButton.setTitleColor(currentTheme.textColor, for: .normal)
+        videoButton.setTitleColor(currentTheme.textColor, for: .normal)
+        
+        nameTextField.backgroundColor = currentTheme.backgroundColorForFields
+        
         
     }
     
     @objc func changeImage() {
+        pickingMainPhoto = true
         var configuration = PHPickerConfiguration()
         configuration.filter = .images
         configuration.selectionLimit = 1
@@ -143,16 +237,10 @@ class AddPlantViewController: UIViewController {
         present(controller, animated: true)
     }
     
-//    @objc func changeVideo() {
-//        self.videoPicker = VideoPicker(presentationController: self, delegate: self)
-//        self.videoPicker.present(from: plantVideoImageView)
-//
-//       }
+
     
     @IBAction func showVideo(_ sender: UIButton) {
-//        self.videoPicker = VideoPicker(presentationController: self, delegate: self)
-//        self.videoPicker.present(from: sender)
-        
+    
         picker.delegate = self
         picker.mediaTypes = ["public.movie"]
         pickingImage = false
@@ -161,18 +249,8 @@ class AddPlantViewController: UIViewController {
         picker.videoExportPreset = "AVAssetExportPresetPassthrough"
         self.present(picker, animated: true, completion: nil)
     }
-    //    @objc func changeVideo() {
-//        var configuration = PHPickerConfiguration()
-//        configuration.filter = .videos
-//        configuration.selectionLimit = 1
-//        let controller = PHPickerViewController(configuration: configuration)
-//        controller.delegate = self
-//        present(controller, animated: true)
-//
-//    }
-    
+ 
     func uploadPhoto() {
-        
         
         guard let image = plantImageView.image,
               let data = image.jpegData(compressionQuality: 0.1) else {
@@ -180,42 +258,31 @@ class AddPlantViewController: UIViewController {
             return
         }
         PhotoRepository.uploadPhoto(data: data) { (url) in
-            self.plantItem.imageUrl = url
+            self.plantItem.imageUrl[0] = url
             print(self.plantItem.imageUrl)
         }
-        
-//        let imageName = UUID().uuidString
-//
-//        let imageReference = Storage.storage().reference()
-//            .child(MyKeys.imagesFolder)
-//            .child(imageName)
-//
-//        imageReference.putData(data, metadata: nil) { (metadata, error) in
-//            if let error = error {
-//                print("DOPISAT COD error: \(error.localizedDescription)" )
-//                return
-//            }
-//
-//            imageReference.downloadURL { (url, error)  in
-//                if let error = error {
-//                    print("DOPISAT COD error: \(error.localizedDescription)" )
-//                    return
-//                }
-//
-//                let urlStr: String = (url?.absoluteString) ?? ""
-//                self.plantItem.imageUrl = urlStr
-//            }
-//        }
+    }
     
+    func uploadPhoto(image: UIImage) {
+        guard let data = image.jpegData(compressionQuality: 0.1) else {
+            print("Cant convert image \(image) to Data format")
+            return
+        }
+        PhotoRepository.uploadPhoto(data: data) { (url) in
+            self.plantItem.imageUrl.append(url)
+        }
     }
     
     
     func addPlantToFirebase() {
         
-        
         plantItem.name = nameTextField.text ?? ""
         plantItem.lifeTime = (lifeTimeTextField.text as? NSString)?.floatValue ?? 0.0
         plantItem.plantFamily = plantFamilyTextField.text ?? ""
+        plantItem.plantDescription = plantDescription.text
+        if plantItem.video == "" {
+            plantItem.video = uploadedVideoUrl!.absoluteString
+        }
         plantItem.completed = true
         
         if plantItem.ref == nil {
@@ -233,13 +300,13 @@ class AddPlantViewController: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
+    
 }
 
 
 extension AddPlantViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-//        addPlantToFirebase()
         return true
     }
 }
@@ -253,47 +320,46 @@ extension Notification.Name {
 }
 
 extension AddPlantViewController: PHPickerViewControllerDelegate {
+    
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
-        if !results.isEmpty {
-            let result = results.first!
-            let itemProvider = result.itemProvider
-            
-            if itemProvider.canLoadObject(ofClass: UIImage.self) {
-                itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
-                    guard let image = image as? UIImage else {
-                        return
-                    }
-                    DispatchQueue.main.async {
-                        self?.plantImageView.image = image
-                        self?.uploadPhoto()
+        
+        if pickingMainPhoto {
+            if !results.isEmpty {
+                let result = results.first!
+                let itemProvider = result.itemProvider
+                
+                if itemProvider.canLoadObject(ofClass: UIImage.self) {
+                    itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+                        guard let image = image as? UIImage else {
+                            return
+                        }
+                        DispatchQueue.main.async {
+                            self?.plantImageView.image = image
+                            self?.uploadPhoto()
+                        }
                     }
                 }
             }
-            
-//            if itemProvider.hasItemConformingToTypeIdentifier(AVFileType.mp4.rawValue) {
-//                itemProvider.loadFileRepresentation(forTypeIdentifier: UTType.movie.identifier, completionHandler: { (url, err) in
-//                    if let url = url {
-//                        DispatchQueue.main.sync {
-//                            print("IN HERE !!!!!!!!!")
-//
-//                            VideoRep.uploadVideo(url) { (myUrl, ref) in
-//                                print("url = \(url)") // here is the URL you can then store into your Firebase tree
-//                                    print("ref = \(ref)")
-//                            } progressEsc: { progress in
-//                                print("progress = \(progress)")
-//                            } completionEsc: {
-//                                print("done")
-//                            } errorEsc: { error in
-//                                print("*** Error during file upload: \(error.localizedDescription)")
-//                            }
-//
-//
-//
-//                        }
-//                    }
-//                })
-//            }
+        } else {
+            if !results.isEmpty {
+                for result in results {
+                    let itemProvider = result.itemProvider
+                    
+                    if itemProvider.canLoadObject(ofClass: UIImage.self) {
+                        itemProvider.loadObject(ofClass: UIImage.self) { [weak self] image, error in
+                            guard let image = image as? UIImage else {
+                                return
+                            }
+                            DispatchQueue.main.async {
+                                self?.uploadPhoto(image: image)
+                            }
+                        }
+                    }
+                }
+            }
         }
+        
+        pickingMainPhoto = false
         picker.dismiss(animated: true, completion: nil)
     }
 }
@@ -346,24 +412,3 @@ extension AddPlantViewController: UINavigationControllerDelegate {
     
 }
 
-
-//extension AddPlantViewController: VideoPickerDelegate {
-//
-//    func didSelect(url: URL?) {
-//        guard let url = url else {
-//            return
-//        }
-//
-//        VideoRep.uploadVideo(url) { (myUrl, ref) in
-//            print("url = \(url)") // here is the URL you can then store into your Firebase tree
-//                print("ref = \(ref)")
-//        } progressEsc: { progress in
-//            print("progress = \(progress)")
-//        } completionEsc: {
-//            print("done")
-//        } errorEsc: { error in
-//            print("*** Error during file upload: \(error.localizedDescription)")
-//        }
-//
-//    }
-//}

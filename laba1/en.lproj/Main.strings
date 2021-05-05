@@ -1,0 +1,78 @@
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "1l6-VN-Zmg"; */
+"1l6-VN-Zmg.title" = "Item";
+
+/* Class = "UITabBarItem"; title = "Item"; ObjectID = "1zf-Rx-K35"; */
+"1zf-Rx-K35.title" = "Item";
+
+/* Class = "UIButton"; normalTitle = "Add secondary photos"; ObjectID = "28X-Ql-Rqm"; */
+"28X-Ql-Rqm.normalTitle" = "Add secondary photos";
+
+/* Class = "UITextField"; placeholder = "Enter a plant family"; ObjectID = "2S4-pH-7s7"; */
+"2S4-pH-7s7.placeholder" = "Enter a plant family";
+
+/* Class = "UILabel"; text = "Family"; ObjectID = "4Vh-kI-LWg"; */
+"4Vh-kI-LWg.text" = "Family";
+
+/* Class = "UILabel"; text = "   Language"; ObjectID = "4eE-rK-EWE"; */
+"4eE-rK-EWE.text" = "Language";
+
+/* Class = "UILabel"; text = "Description"; ObjectID = "55B-4b-VlJ"; */
+"55B-4b-VlJ.text" = "Description";
+
+/* Class = "UIButton"; normalTitle = "Add video"; ObjectID = "5vn-gX-FhI"; */
+"5vn-gX-FhI.normalTitle" = "Add video";
+
+/* Class = "UITextField"; placeholder = "Enter plant's life time period"; ObjectID = "67h-e7-Y89"; */
+"67h-e7-Y89.placeholder" = "Enter plant's life time period";
+
+/* Class = "UITextView"; text = "Desctiption"; ObjectID = "8Cz-8P-38u"; */
+"8Cz-8P-38u.text" = "Desctiption";
+
+/* Class = "UIButton"; normalTitle = "Save Changes"; ObjectID = "8Jg-4J-WIh"; */
+"8Jg-4J-WIh.normalTitle" = "Save Changes";
+
+/* Class = "UILabel"; text = "Titled"; ObjectID = "9CR-3w-OBs"; */
+"9CR-3w-OBs.text" = "Titled";
+
+/* Class = "UILabel"; text = "Time of life"; ObjectID = "GcO-X7-gUc"; */
+"GcO-X7-gUc.text" = "Time of life";
+
+/* Class = "UILabel"; text = "Plant Family"; ObjectID = "He3-tn-pWT"; */
+"He3-tn-pWT.text" = "Plant Family";
+
+/* Class = "UINavigationItem"; title = "Settings"; ObjectID = "IVX-Z8-ul3"; */
+"IVX-Z8-ul3.title" = "Settings";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "J4Q-XD-exY"; */
+"J4Q-XD-exY.text" = "Name";
+
+/* Class = "UILabel"; text = "   Life time is:"; ObjectID = "OMB-n7-uQr"; */
+"OMB-n7-uQr.text" = "   Life time is:";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "STB-ad-MyC"; */
+"STB-ad-MyC.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "Map"; ObjectID = "Sro-6D-UzG"; */
+"Sro-6D-UzG.title" = "Map";
+
+/* Class = "UIButton"; normalTitle = "Videos"; ObjectID = "ZfJ-W8-YPM"; */
+"ZfJ-W8-YPM.normalTitle" = "Videos";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "ach-yz-uAX"; */
+"ach-yz-uAX.text" = "Name";
+
+/* Class = "UITabBarItem"; title = "Map"; ObjectID = "dfw-Rf-XuA"; */
+"dfw-Rf-XuA.title" = "Map";
+
+/* Class = "UIButton"; normalTitle = "Add new plant to collection"; ObjectID = "giE-gZ-0e1"; */
+"giE-gZ-0e1.normalTitle" = "Add new plant to collection";
+
+/* Class = "UINavigationItem"; title = "Plants"; ObjectID = "oJC-QJ-rbW"; */
+"oJC-QJ-rbW.title" = "Plants";
+
+/* Class = "UITextField"; placeholder = "Enter a plant name"; ObjectID = "pRB-r4-0d3"; */
+"pRB-r4-0d3.placeholder" = "Enter a plant name";
+
+/* Class = "UITabBarItem"; title = "Settings"; ObjectID = "t1E-1W-klu"; */
+"t1E-1W-klu.title" = "Settings";
