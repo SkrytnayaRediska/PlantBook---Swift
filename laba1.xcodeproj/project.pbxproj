@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		03418463879AA5D788CF64A7 /* Pods_laba1.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 48A5DF20410716D3B89A912E /* Pods_laba1.framework */; };
+		7700F94D26455483003F78D7 /* PlantAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7700F94C26455483003F78D7 /* PlantAnnotation.swift */; };
+		7700F9682646C8CC003F78D7 /* PlantMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7700F9672646C8CC003F78D7 /* PlantMarkerView.swift */; };
 		77290256263EA8CC00B6DD0F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 77290258263EA8CC00B6DD0F /* Localizable.strings */; };
 		774F0DC9263EB9E9007616BC /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774F0DC8263EB9E9007616BC /* SettingsViewController.swift */; };
 		774F0DCD263EC67F007616BC /* StringLocalizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774F0DCC263EC67F007616BC /* StringLocalizer.swift */; };
@@ -38,12 +40,16 @@
 		77DF2F1C26382E62000AE419 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DF2F1B26382E62000AE419 /* MapViewController.swift */; };
 		77DF2F3B263AF0DE000AE419 /* PhotosCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DF2F3A263AF0DE000AE419 /* PhotosCollectionViewController.swift */; };
 		77DF2F3F263AF62F000AE419 /* IamgeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DF2F3E263AF62F000AE419 /* IamgeCell.swift */; };
+		77EA92FB264442D70046A678 /* ImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EA92FA264442D70046A678 /* ImageItem.swift */; };
+		77EA92FE264448020046A678 /* MyImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77EA92FD264448020046A678 /* MyImages.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		284D972BF81E79F5F300C8A8 /* Pods-laba1.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-laba1.debug.xcconfig"; path = "Target Support Files/Pods-laba1/Pods-laba1.debug.xcconfig"; sourceTree = "<group>"; };
 		3F60B1AAB1CCF20EA185CB4F /* Pods-laba1.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-laba1.release.xcconfig"; path = "Target Support Files/Pods-laba1/Pods-laba1.release.xcconfig"; sourceTree = "<group>"; };
 		48A5DF20410716D3B89A912E /* Pods_laba1.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_laba1.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7700F94C26455483003F78D7 /* PlantAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantAnnotation.swift; sourceTree = "<group>"; };
+		7700F9672646C8CC003F78D7 /* PlantMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantMarkerView.swift; sourceTree = "<group>"; };
 		7729024F263EA77C00B6DD0F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
 		77290250263EA77D00B6DD0F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		77290257263EA8CC00B6DD0F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -80,6 +86,8 @@
 		77DF2F1B26382E62000AE419 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		77DF2F3A263AF0DE000AE419 /* PhotosCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosCollectionViewController.swift; sourceTree = "<group>"; };
 		77DF2F3E263AF62F000AE419 /* IamgeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IamgeCell.swift; sourceTree = "<group>"; };
+		77EA92FA264442D70046A678 /* ImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageItem.swift; sourceTree = "<group>"; };
+		77EA92FD264448020046A678 /* MyImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyImages.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +198,7 @@
 			children = (
 				7773AB2425FE8DE6004C41DE /* PlantCell.swift */,
 				77DF2F3E263AF62F000AE419 /* IamgeCell.swift */,
+				7700F9672646C8CC003F78D7 /* PlantMarkerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -200,6 +209,9 @@
 				7773AB1625FE79BB004C41DE /* Plant.swift */,
 				7767A773261A4C690077AE09 /* PlantCollection.swift */,
 				774F0DD3263ECDEE007616BC /* Settings.swift */,
+				77EA92FA264442D70046A678 /* ImageItem.swift */,
+				77EA92FD264448020046A678 /* MyImages.swift */,
+				7700F94C26455483003F78D7 /* PlantAnnotation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -363,11 +375,14 @@
 				774F0DC9263EB9E9007616BC /* SettingsViewController.swift in Sources */,
 				7773AB2525FE8DE6004C41DE /* PlantCell.swift in Sources */,
 				774F0DCD263EC67F007616BC /* StringLocalizer.swift in Sources */,
+				77EA92FE264448020046A678 /* MyImages.swift in Sources */,
+				7700F9682646C8CC003F78D7 /* PlantMarkerView.swift in Sources */,
 				776E69A9261DCB70001C4A8D /* PlantDetailController.swift in Sources */,
 				775AC86625FE4EAD00557B4C /* AppDelegate.swift in Sources */,
 				7781FFC626415BB9000ED09D /* ThemeManager.swift in Sources */,
 				7773AB1725FE79BB004C41DE /* Plant.swift in Sources */,
 				774F0DD4263ECDEE007616BC /* Settings.swift in Sources */,
+				77EA92FB264442D70046A678 /* ImageItem.swift in Sources */,
 				775AC86825FE4EAD00557B4C /* SceneDelegate.swift in Sources */,
 				7767D4F62636F5AF00CD499D /* VideoPicker.swift in Sources */,
 				7781FFBA2640A1F3000ED09D /* Theme.swift in Sources */,
@@ -382,6 +397,7 @@
 				775E87E0261F40A00047D92F /* AddPlantViewController.swift in Sources */,
 				77DF2F3F263AF62F000AE419 /* IamgeCell.swift in Sources */,
 				778A9C19260CDF2B0004378B /* SignInViewController.swift in Sources */,
+				7700F94D26455483003F78D7 /* PlantAnnotation.swift in Sources */,
 				778A9C1F260CE4560004378B /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -545,6 +561,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = XGZ4LMCQA2;
 				INFOPLIST_FILE = laba1/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -564,6 +581,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = XGZ4LMCQA2;
 				INFOPLIST_FILE = laba1/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

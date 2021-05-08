@@ -46,6 +46,8 @@ final class Plant: NSObject {
             let plantFamily = value["plantFamily"] as? String,
             let video = value["video"] as? String,
             let plantDescription = value["description"] as? String,
+//            var imageUrl = value["imageUrl"] as? DataSnapshot,
+//            var myImage = ImageItem(snapshot: imageUrl),
             var imageUrl = value["imageUrl"] as? [String],
             let mapX = value["mapX"] as? Double,
             let mapY = value["mapY"] as? Double,
@@ -53,6 +55,7 @@ final class Plant: NSObject {
             return nil
         }
         
+        print("VALUE IS HERE -> \(snapshot.value)")
         self.ref = snapshot.ref
         self.name = name
         self.lifeTime = lifeTime

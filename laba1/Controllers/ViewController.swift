@@ -132,7 +132,13 @@ extension ViewController {
             }
             
             
+            cell.titleLabel.backgroundColor = UIColor.systemGray.withAlphaComponent(0.8)
+            cell.familyLabel.backgroundColor = UIColor.systemGray.withAlphaComponent(0.8)
+            cell.ageLabel.backgroundColor = UIColor.systemGray.withAlphaComponent(0.8)
+            
             cell.titleLabel.text = plant.name
+            cell.familyLabel.text = plant.plantFamily
+            cell.ageLabel.text = String(plant.lifeTime)
             self.downloadPhoto(cell: cell, url: plant.imageUrl[0])
             
             
@@ -178,6 +184,7 @@ extension ViewController {
             for child in snapshot.children {
                 if let snapshot = child as? DataSnapshot,
                    let plantItem = Plant(snapshot: snapshot) {
+                    snapshot.value
                     print("snapshot HERE!!! \(snapshot)")
                     print("in HERE in in \(plantItem.lifeTime)")
                     if(plantItem.imageUrl[0] == "") {

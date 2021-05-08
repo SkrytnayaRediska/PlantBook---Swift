@@ -12,4 +12,6 @@ class PlantCell: UICollectionViewCell {
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var plantImage: UIImageView!
+    @IBOutlet weak var familyLabel: UILabel!
+    @IBOutlet weak var ageLabel: UILabel!
 }

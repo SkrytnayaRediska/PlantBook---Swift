@@ -18,7 +18,7 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         GIDSignIn.sharedInstance()?.presentingViewController = self
-        GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+//        GIDSignIn.sharedInstance()?.restorePreviousSignIn()
         handle = Auth.auth().addStateDidChangeListener() { (auth, user) in
             if user != nil {
                 MeasurementHelper.sendLoginEvent()
@@ -27,9 +27,27 @@ class SignInViewController: UIViewController {
         }
     }
     
+    @IBAction func performSignOut(_ sender: Any) {
+        let firebaseAuth = Auth.auth()
+        do {
+          try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+          print ("Error signing out: %@", signOutError)
+        }
+          
+    }
     deinit {
       if let handle = handle {
           Auth.auth().removeStateDidChangeListener(handle)
+        
+        let firebaseAuth = Auth.auth()
+        do {
+          try firebaseAuth.signOut()
+            
+//            _ = self.navigationController?.popViewController(animated: true)
+        } catch let signOutError as NSError {
+          print ("Error signing out: %@", signOutError)
+        }
       }
     }
 }

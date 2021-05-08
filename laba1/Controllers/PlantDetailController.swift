@@ -121,6 +121,7 @@ final class PlantDetailViewController: UIViewController {
         plantFamilyLabel.textColor = currentTheme.textColor.withAlphaComponent(0.5)
         lifeTimeUILabel.textColor = currentTheme.textColor
         descriptionTextVIew.textColor = currentTheme.textColor
+        videosLabelButton.setTitleColor(currentTheme.textColor, for: .normal)
         
     }
     

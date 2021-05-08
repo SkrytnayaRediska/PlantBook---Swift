@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Firebase
+import GoogleSignIn
 
 class SettingsViewController: UIViewController {
 
@@ -19,6 +21,7 @@ class SettingsViewController: UIViewController {
    
     @IBOutlet weak var darkModeSwitch: UISwitch!
     
+    @IBOutlet weak var signOutButton: UIButton!
     @IBOutlet weak var darkModeLabel: UILabel!
     var settings: Settings!
 
@@ -48,6 +51,7 @@ class SettingsViewController: UIViewController {
         
         settingsNavigationBar.barTintColor = currentTheme.backgroundColorForNavigationBar
         settingsNavigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: currentTheme.textColor]
+        signOutButton.setTitleColor(currentTheme.textColor, for: .normal)
 //        tabBarController?.tabBar.barTintColor = currentTheme.backgroundColorForNavigationBar
     }
     
@@ -62,7 +66,17 @@ class SettingsViewController: UIViewController {
         
         settingsNavigationBar.barTintColor = currentTheme.backgroundColorForNavigationBar
         settingsNavigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: currentTheme.textColor]
+        signOutButton.setTitleColor(currentTheme.textColor, for: .normal)
 //        tabBarController?.tabBar.barTintColor = currentTheme.backgroundColorForNavigationBar
+    }
+    @IBAction func performeSignOut(_ sender: Any) {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            _ = self.navigationController?.popToRootViewController(animated: true)
+        } catch let signOutError as NSError {
+            print("Error sign out", signOutError)
+        }
     }
     
     @IBAction func saveSettings(_ sender: Any) {
