@@ -15,7 +15,10 @@ class MapViewController: UIViewController {
     var plants: [Plant] = []
     let defaultRegionCordinage: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 53.893009, longitude: 27.567444)
     
+    private var changedTheme: UIColor?
+    private var fontSize: CGFloat?
     private let locationManager = CLLocationManager()
+    @IBOutlet weak var mapNavItem: UINavigationItem!
     
     @IBOutlet weak var mapView: MKMapView!
     
@@ -24,6 +27,10 @@ class MapViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationCenter.default.post(name: .didReciveRequest, object: self)
+        NotificationCenter.default.post(name: .requestForColor, object: self)
+        NotificationCenter.default.post(name: .requestForFontSize, object: nil)
+        enableDarkMode()
+        changeLabels()
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
@@ -43,6 +50,11 @@ class MapViewController: UIViewController {
         setUpView()
         
         NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveData(_:)), name: .didReceiveData, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveColor(_:)), name: .didReceiveColor, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onDidReceiveFontSize(_:)), name: .didReceiveFontSize, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onChangedFont(_:)), name: .fontChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(changeLabels), name: .languageChanged, object: nil)
+        
         
         
         locationManager.delegate = self
@@ -52,24 +64,75 @@ class MapViewController: UIViewController {
         if ThemeManager.isDarkMode() {
             enableDarkMode()
         }
+        if changedTheme != nil {
+            enableDarkMode()
+        }
         
+        if fontSize != nil {
+            // MAKE something
+        }
 
     
     }
     
     func setUpView() {
         ThemeManager.addDarkModeObserver(to: self, selector: #selector(enableDarkMode))
+        NotificationCenter.default.addObserver(self, selector: #selector(onChangedColor(_:)), name: .changedColor, object: nil)
     }
+    
+    @objc func onChangedFont(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: CGFloat] {
+            fontSize = data["fontSize"]
+            // IF there is any aditional items
+            print(fontSize)
+            
+        }
+    }
+    
+    @objc func onChangedColor(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: UIColor] {
+            changedTheme = data["color"]
+//            print("YO")
+        }
+    }
+    
+    @objc func onDidReceiveColor(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: UIColor] {
+            changedTheme = data["colorMain"]
+            print("YO")
+        }
+    }
+    
+    @objc func onDidReceiveFontSize(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: CGFloat] {
+            fontSize = data["fontMain"]
+            print("yo")
+        }
+    }
+    
+    @objc func changeLabels() {
+        mapNavItem.title = "Map".localized()
+        
+    }
+    
     
     @objc func enableDarkMode() {
         let currentTheme = ThemeManager.currentTheme
         
         navigationController?.navigationBar.barTintColor = currentTheme.backgroundColorForNavigationBar
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: currentTheme.textColor]
         
+        if fontSize == nil { fontSize = 17.0 }
+        
+        let attributes = [
+          NSAttributedString.Key.font: UIFont.systemFont(ofSize: fontSize!),
+            NSAttributedString.Key.foregroundColor: currentTheme.textColor
+        ]
+        
+        navigationController?.navigationBar.titleTextAttributes = attributes
     }
     
     @objc func onDidReceiveData(_ notification: Notification) {
+        
         
 
         if let data = notification.userInfo as? [String: [Plant]] {
@@ -140,10 +203,17 @@ extension MapViewController: MKMapViewDelegate {
       }
 
            if let plantDetailController = storyboard?.instantiateViewController(identifier: PlantDetailViewController.identifier, creator: { coder in
-            return PlantDetailViewController(coder: coder, plant: plantAnnotation.plantItem!, isDarkMode: ThemeManager.isDarkMode())
+            return PlantDetailViewController(coder: coder, plant: plantAnnotation.plantItem!, isDarkMode: ThemeManager.isDarkMode(), currentTheme: self.changedTheme, fontSize: self.fontSize)
            }) {
             show(plantDetailController, sender: nil)
            }
 
     }
+}
+
+extension Notification.Name {
+    static let requestForColor = Notification.Name("requestForColor")
+    static let didReceiveColor = Notification.Name("didReceiveColor")
+    static let requestForFontSize = Notification.Name("requestForFontSize")
+    static let didReceiveFontSize = Notification.Name("didReceiveFontSize")
 }

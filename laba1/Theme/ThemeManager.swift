@@ -6,13 +6,21 @@
 //
 
 import Foundation
-
+import UIKit
 
 struct ThemeManager {
     static let isDarkModeKey = "isDarkMode"
     
     static var currentTheme: Theme {
         return isDarkMode() ? .dark : .light
+    }
+    
+    static func setCurrentTheme(_ color: UIColor?) -> Theme {
+        if (color != nil) {
+        return isDarkMode() ? .dark : Theme(textColor: .black, backgroundColor: color!, backgroundColorForNavigationBar: .white, backgroundColorForFields: .systemBackground)
+        } else {
+            return isDarkMode() ? .dark : .light
+        }
     }
     
     static func isDarkMode() -> Bool {

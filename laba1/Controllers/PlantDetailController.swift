@@ -7,6 +7,7 @@
 
 import UIKit
 import AVKit
+import FirebaseAuth
 
 final class PlantDetailViewController: UIViewController {
 
@@ -18,6 +19,12 @@ final class PlantDetailViewController: UIViewController {
     private let plant: Plant
     
     private var isDarkMode: Bool
+    
+    private var changedTheme: UIColor?
+    
+    private var fontSize: CGFloat?
+    
+    
 
 
 
@@ -37,10 +44,13 @@ final class PlantDetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init?(coder: NSCoder, plant: Plant, isDarkMode: Bool) {
+    init?(coder: NSCoder, plant: Plant, isDarkMode: Bool, currentTheme: UIColor?,
+          fontSize: CGFloat?) {
         
         self.plant = plant
         self.isDarkMode = isDarkMode
+        self.changedTheme = currentTheme
+        self.fontSize = fontSize
         super.init(coder: coder)
     }
     
@@ -51,14 +61,15 @@ final class PlantDetailViewController: UIViewController {
         setupView()
         
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(editTaped))
-        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editTaped))
+//        (barButtonSystemItem: .edit, target: self, action: #selector(editTaped))
         plantCoverImageView.isUserInteractionEnabled = true
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(showPhotoCollection))
         plantCoverImageView.addGestureRecognizer(gestureRecognizer)
         
         if isDarkMode { enableDarkMode() }
-    
+        if changedTheme != nil { enableDarkMode() }
+        if fontSize != nil { changeUIFont(fontSize: fontSize!)}
     }
     
     
@@ -66,7 +77,7 @@ final class PlantDetailViewController: UIViewController {
     @objc func showPhotoCollection() {
         
         if let plantDetailController = storyboard?.instantiateViewController(identifier: PhotosCollectionViewController.identifier, creator: { coder in
-            return PhotosCollectionViewController(coder: coder, plant: self.plant)
+            return PhotosCollectionViewController(coder: coder, plant: self.plant, isEditMode: false)
         }) {
        show(plantDetailController, sender: nil)
      }
@@ -75,26 +86,44 @@ final class PlantDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidLoad()
         setupView()
+        changeLabels()
     }
     
     @objc func editTaped() {
-        if let plantDetailController = storyboard?.instantiateViewController(identifier: AddPlantViewController.identifier, creator: { coder in
-            return AddPlantViewController(coder: coder, plant: self.plant, isDarkMode: self.isDarkMode)
-        }) {
-       show(plantDetailController, sender: nil)
-     }
+       
+        if Auth.auth().currentUser != nil {
+            if let plantDetailController = storyboard?.instantiateViewController(identifier: AddPlantViewController.identifier, creator: { coder in
+                return AddPlantViewController(coder: coder, plant: self.plant, isDarkMode: self.isDarkMode, currentTheme: self.changedTheme, fontSize: self.fontSize)
+            }) {
+           show(plantDetailController, sender: nil)
+         }
+
+        } else {
+            let alert = UIAlertController(title: "Edit mode is LOCKED".localized(), message: "SignUpRestriction".localized(), preferredStyle: .alert)
+
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        }
     }
     
     @IBAction func ShowVideo(_ sender: Any) {
         print("hellio")
-    
-        let video = AVPlayer(url: URL(string: plant.video)!)
-        let videoPlayer =  AVPlayerViewController()
-        
-        videoPlayer.player = video
-        
-        self.present(videoPlayer, animated: true) {
-            video.play()
+        if plant.video == "" {
+            let alert = UIAlertController(title: "There is no video".localized(), message: "Please add video".localized(), preferredStyle: .alert)
+
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                print("YO")
+            }))
+            self.present(alert, animated: true)
+        } else {
+            let video = AVPlayer(url: URL(string: plant.video)!)
+            let videoPlayer =  AVPlayerViewController()
+            
+            videoPlayer.player = video
+            
+            self.present(videoPlayer, animated: true) {
+                video.play()
+        }
         }
     }
     func downloadPhoto(imageView: UIImageView, url: String) {
@@ -115,7 +144,7 @@ final class PlantDetailViewController: UIViewController {
     }
     
     @objc func enableDarkMode() {
-        let currentTheme = ThemeManager.currentTheme
+        let currentTheme = ThemeManager.setCurrentTheme(changedTheme)
         nameLabel.textColor = currentTheme.textColor
         view.backgroundColor = currentTheme.backgroundColor
         plantFamilyLabel.textColor = currentTheme.textColor.withAlphaComponent(0.5)
@@ -125,8 +154,48 @@ final class PlantDetailViewController: UIViewController {
         
     }
     
+    @objc func onChangedColor(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: UIColor] {
+            changedTheme = data["color"]
+        }
+    }
+    
+    @objc func onChangedFont(_ notification: Notification) {
+        if let data = notification.userInfo as? [String: CGFloat] {
+            fontSize = data["fontSize"]
+            // IF there is any aditional items
+            changeUIFont(fontSize: fontSize!)
+            
+        }
+    }
+    @objc func changeLabels() {
+        lifeTimeUILabel.text = "Life time is".localized()
+        
+        videosLabelButton.setTitle("Videos".localized(), for: .normal)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit".localized(),
+                                style: .plain, target: self, action: #selector(editTaped))
+        
+        
+    }
+    
+    func changeUIFont(fontSize: CGFloat) {
+        nameLabel.font = nameLabel.font.withSize(fontSize)
+        plantFamilyLabel.font = nameLabel.font.withSize(fontSize)
+        lifeTimeLabel.font = lifeTimeLabel.font.withSize(fontSize)
+        lifeTimeUILabel.font = lifeTimeUILabel.font.withSize(fontSize)
+        videosLabelButton.titleLabel?.font = videosLabelButton.titleLabel?.font.withSize(fontSize)
+        descriptionTextVIew.font = descriptionTextVIew.font?.withSize(fontSize)
+        
+    }
+    
     private func setupView() {
         ThemeManager.addDarkModeObserver(to: self, selector: #selector(enableDarkMode))
+        NotificationCenter.default.addObserver(self, selector: #selector(onChangedColor(_:)),
+                                               name: .changedColor, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onChangedFont(_:)),
+                                               name: .fontChanged, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(changeLabels),
+                                               name: .languageChanged, object: nil)
         
         self.title = plant.name
         downloadPhoto(imageView: plantCoverImageView, url: plant.imageUrl[0])

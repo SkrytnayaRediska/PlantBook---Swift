@@ -11,6 +11,7 @@ class PhotosCollectionViewController: UIViewController {
     
     static let identifier = String(describing: PhotosCollectionViewController.self)
     private let plant: Plant
+    private let isEditMode: Bool
 
     
     @IBOutlet weak var photosCollectionView: UICollectionView!
@@ -22,17 +23,44 @@ class PhotosCollectionViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init?(coder: NSCoder, plant: Plant) {
+    init?(coder: NSCoder, plant: Plant, isEditMode: Bool) {
 
         self.plant = plant
+        self.isEditMode = isEditMode
         super.init(coder: coder)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if isEditMode {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteTapped))
+        }
         photosCollectionView.collectionViewLayout = configureCollectionViewLayout()
         configureDataSource()
         configureSnapshot(plant: plant)
+    }
+
+    @objc func deleteTapped() {
+        if plant.imageUrl.count == 1 {
+            let alert = UIAlertController(title: "Can not delete last photo".localized(), message: "Item must have at least one photo".localized(), preferredStyle: .alert)
+
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true)
+        } else {
+        var visibleCell = photosCollectionView.visibleCells[0]
+        var indexPath = photosCollectionView.indexPath(for: visibleCell)!
+        var currentPhoto = dataSource.itemIdentifier(for: indexPath)!
+        deletePhoto(currentPhoto)
+        configureSnapshot(plant: plant)
+        photosCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+        }
+    }
+    
+    func deletePhoto(_ photo: String) {
+        var index = plant.imageUrl.firstIndex(of: photo)!
+        plant.imageUrl.remove(at: index)
+
     }
 
 }
